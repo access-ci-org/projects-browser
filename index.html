@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects Browser</title>
+  </head>
+  <body>
+    <div id="projects_browser_app"></div>
+
+    <script type="module">
+      // import { renderBrowser } from "https://esm.sh/@xras/projects-browser";
+      import { renderBrowser } from "/src/index.jsx";
+      renderBrowser({
+        projects: "http://localhost:3007/current-projects.json",
+        filters: "http://localhost:3007/current-projects/filters.json"
+      });
+    </script>
+  </body>
+</html>

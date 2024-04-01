@@ -1,0 +1,66 @@
+.fos-select-list {
+  height: 200px;
+  overflow-x: auto;
+  padding: 2px;
+}
+
+.loadingDiv {
+  font-size: 2rem;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.page-link {
+  width: 50px;
+  text-align: center;
+}
+
+select.page-link {
+  width: auto;
+}
+
+.project-list-table {
+
+  tr {
+    vertical-align: top;
+  }
+
+  th {
+    white-space: nowrap;
+  }
+
+  td, th {
+    padding: 5px;
+  }
+
+  tbody > tr:nth-child(odd) * {
+    padding-top: 20px;
+  }
+
+  tbody > tr:first-child > td {
+    padding-top: 5px;
+  }
+
+
+}
+
+.abstract {
+  white-space: pre-wrap;
+  padding: 5px;
+}
+
+.view-more-btn {
+  font-weight: bold;
+  border: none;
+  background-color: unset;
+}
+
+#body .accordion .accordion-item {
+  margin-bottom: 0px;
+}
+
+.tooltip-underline {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  cursor: help;
+}
