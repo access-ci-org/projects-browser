@@ -7,7 +7,7 @@ import ProjectList from "./ProjectList";
 import Pagination from "./Pagination";
 import { initApp, selectFiltersLoaded, selectProjectsLoaded, selectShowPagination } from "../state/browserSlice";
 
-const ProjectsBrowser = ({ projects, filters }) => {
+const ProjectsBrowser = ({ api_url }) => {
   const dispatch = useDispatch();
   const projectsLoaded = useSelector( selectProjectsLoaded );
   const filtersLoaded = useSelector( selectFiltersLoaded );
@@ -19,7 +19,7 @@ const ProjectsBrowser = ({ projects, filters }) => {
   )
 
   useEffect(() => {
-    dispatch( initApp( { projects, filters} ) );
+    dispatch( initApp(api_url) );
   }, [])
 
   return(
@@ -43,7 +43,7 @@ const ProjectsBrowser = ({ projects, filters }) => {
 
           <div className="row">
             <div className="col">
-              {showPagination ? <Pagination scroll="projectListRow" /> : ''}
+              {showPagination ? <Pagination scroll="projects_browser_app" /> : ''}
             </div>
           </div>
 

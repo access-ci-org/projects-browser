@@ -28,8 +28,8 @@ const Project = ({ project }) => {
   return (
       <div className="card mb-4">
         <div className="card-header bg-primary text-white">
-            <span className="fw-bold">{project.title}</span> <br />
-            <span className="fst-italic">{project.pi} <small> ({project.pi_institution}) </small></span>
+            <span className="fw-bold">{project.requestTitle}</span> <br />
+            <span className="fst-italic">{project.pi} <small> ({project.piInstitution}) </small></span>
         </div>
         <div className="card-body">
           <div className="row fw-bold border-bottom">
@@ -46,13 +46,13 @@ const Project = ({ project }) => {
 
           <div className="row">
             <div className="col">
-              {project.primary_fos}
+              {project.fos}
             </div>
             <div className="col">
-              {project.allocation_type}
+              {project.allocationType}
             </div>
             <div className="col">
-              {project.start_date} to {project.end_date}
+              {project.beginDate} to {project.endDate}
             </div>
           </div>
 
@@ -71,8 +71,8 @@ const Project = ({ project }) => {
                   </thead>
                   <tbody>
                     {resources.map((r,i) =>
-                      <tr key={`resource_${project.project_id}_${i}`}>
-                        <td>{r.resource_name}</td>
+                      <tr key={`resource_${project.requestId}_${i}`}>
+                        <td>{r.resourceName}</td>
                         <td style={{ whiteSpace: 'nowrap' }}>{formatNumber(r)}</td>
                       </tr>
                     )}

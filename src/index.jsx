@@ -7,8 +7,7 @@ import appStyles from './styles/app.scss?inline';
 import bootstrapStyles from './styles/bootstrap.scss?inline';
 
 const renderBrowser = ({
-    projects,
-    filters,
+    api_url,
     disable_bootstrap
   }) => {
   const container = document.getElementById("projects_browser_app");
@@ -19,8 +18,7 @@ const renderBrowser = ({
     <Provider store={store}>
       <div className='container'>
         <ProjectsBrowser
-          projects={projects}
-          filters={filters}
+          api_url={api_url}
         />
       </div>
       {bootstrapDisabled ? '' : <style>{bootstrapStyles}</style>}

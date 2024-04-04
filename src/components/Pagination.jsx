@@ -19,12 +19,13 @@ const Pagination = ({ scroll }) => {
 
 	const handleGetPage = (page) => {
     const pageNumber = parseInt(page);
-    dispatch( updatePageData({current_page: page}) )
-		dispatch( getProjects(pageNumber) );
     if(scroll){
       const offsetTop = document.querySelector(`#${scroll}`).offsetTop;
       window.scrollTo(0,offsetTop);
     }
+
+    dispatch( updatePageData({current_page: page}) )
+		dispatch( getProjects(pageNumber) );
 	}
 
 	const goToPage = (page) => {

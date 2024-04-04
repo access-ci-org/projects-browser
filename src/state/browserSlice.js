@@ -6,7 +6,7 @@ const initialState = {
   pages: 1,
   projects: [],
   projectsLoaded: false,
-  filtersLoaded: false,
+  filtersLoaded: true,
   showPagination: false,
   filters: {
     org: '',
@@ -27,8 +27,8 @@ const initialState = {
 export const initApp = createAsyncThunk(
   'projectsBrowser/initApp',
   async(args, { getState, dispatch }) => {
-    dispatch( setApiUrl(args.projects) );
-    dispatch( getFilters(args.filters) );
+    dispatch( setApiUrl(args) );
+    dispatch( getFilters() );
     dispatch( getProjects() );
   }
 )
@@ -36,11 +36,12 @@ export const initApp = createAsyncThunk(
 export const getFilters = createAsyncThunk(
   'projectsBrowser/getFilters',
   async (args, { getState, dispatch }) => {
-
-    const response = await fetch(args);
+    const state = getState().projectsBrowser;
+    const url = `${state.apiUrl}?filters=1`;
+    const response = await fetch(url);
     const data = await response.json();
 
-    dispatch( setTypeLists(data) );
+    dispatch( setTypeLists(data.filters) );
 
   }
 );
@@ -56,7 +57,7 @@ export const getProjects = createAsyncThunk(
     let url = `${state.apiUrl}?page=${state.pageData.current_page}`;
 
     if(fosList.length != typeLists.fosTypes.length){
-      url += `&fos=${fosList.map((fos) => fos.fos_type_id)}`;
+      url += `&fos=${fosList.map((fos) => fos.fos_type_id).join(',')}`;
     }
 
     if(filters.org != ''){
