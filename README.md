@@ -7,9 +7,9 @@ This app provides a user interface to browse projects that are active with appro
 ```html
 <div id="projects_browser_app"></div>
 <script type="module">
-  import { renderCatalog } from "https://esm.sh/@xras/projects-browser";
+  import { renderBrowser } from "https://esm.sh/@xras/projects-browser";
 
-  renderCatalog({
+  renderBrowser({
     projects: "/path/to/projects.json",
     disable_bootstrap: false
   });
