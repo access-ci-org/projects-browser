@@ -5,15 +5,17 @@ const Project = ({ project }) => {
   const resources = project.resources;
 
   const formatNumber = (resource) => {
-    if(resource.units == "[Yes = 1, No = 0]"){
-      return resource.allocation == "1.0" ? "Yes" : "No"
+    let units = resource.units ? resource.units : resource.resourceUnits;
+    const amount = resource.allocation ? resource.allocation : resource.amount;
+
+    if(units == "[Yes = 1, No = 0]"){
+      return allocation == "1.0" ? "Yes" : "No"
     } else {
       let allocation = "0";
-      if(parseInt(resource.allocation)){
-        allocation = parseInt(resource.allocation).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      if(parseInt(amount)){
+        allocation = parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
-      let units = resource.units;
       if(units == "ACCESS Credits"){
         units = (<span className="tooltip-underline" title="universal currency that can be exchanged for resource units">ACCESS Credits</span>)
       }
