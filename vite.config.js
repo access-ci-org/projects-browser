@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.jsx"),
-      name: "XrasResourceCatalog",
+      name: "XrasProjectsBrowser",
       fileName: "xras-projects-browser",
     },
   },

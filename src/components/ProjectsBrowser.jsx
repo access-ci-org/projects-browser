@@ -6,6 +6,10 @@ import Filters from "./Filters";
 import ProjectList from "./ProjectList";
 import Pagination from "./Pagination";
 import { initApp, selectFiltersLoaded, selectProjectsLoaded, selectShowPagination } from "../state/browserSlice";
+import root from 'react-shadow';
+import bs from '../styles/bs.css?inline';
+import appStyles from "../styles/app.scss?inline";
+
 
 const ProjectsBrowser = ({ api_url }) => {
   const dispatch = useDispatch();
@@ -23,33 +27,37 @@ const ProjectsBrowser = ({ api_url }) => {
   }, [])
 
   return(
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-sm-3">
-          <Filters />
+    <root.div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-3">
+            <Filters />
+          </div>
+          <div className="col-sm-9">
+            <div className="row">
+              <div className="col">
+                {showPagination ? <Pagination /> : ''}
+              </div>
+            </div>
+
+            <div className="row" id="projectListRow">
+              <div className="col">
+                {projectsLoaded && filtersLoaded ? <ProjectList /> : loadingScreen }
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col">
+                {showPagination ? <Pagination scroll="projects_browser_app" /> : ''}
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div className="col-sm-9">
-          <div className="row">
-            <div className="col">
-              {showPagination ? <Pagination /> : ''}
-            </div>
-          </div>
-
-          <div className="row" id="projectListRow">
-            <div className="col">
-              {projectsLoaded && filtersLoaded ? <ProjectList /> : loadingScreen }
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col">
-              {showPagination ? <Pagination scroll="projects_browser_app" /> : ''}
-            </div>
-          </div>
-
-        </div>
+        <style>{appStyles}</style>
+        <style>{bs}</style>
       </div>
-    </div>
+    </root.div>
   )
 }
 
