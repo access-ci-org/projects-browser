@@ -28,10 +28,30 @@ export const initApp = createAsyncThunk(
   'projectsBrowser/initApp',
   async(args, { getState, dispatch }) => {
     dispatch( setApiUrl(args) );
-    dispatch( getFilters() );
-    dispatch( getProjects() );
+    await dispatch( getFilters() );
+    await dispatch( getProjects() );
+    dispatch( filterCleanup() );
   }
 )
+
+export const filterCleanup = createAsyncThunk(
+  'projectsBrowser/filterCleanup',
+  async (args, { getState, dispatch }) => {
+    const state = getState().projectsBrowser;
+    const filters = state.typeLists;
+    // const orgs = state.projects
+    //   .map((p) => p.piInstitution)
+    //   .filter((g) => g)
+    //   .filter((value, index, array) => array.indexOf(value) === index)
+    //   .sort((a, b) => a > b)
+
+    dispatch( setTypeLists({
+      ...filters,
+      orgs: ["-- ALL --"].concat(filters.orgs)
+    }) );
+
+  }
+);
 
 export const getFilters = createAsyncThunk(
   'projectsBrowser/getFilters',
@@ -60,8 +80,8 @@ export const getProjects = createAsyncThunk(
       url += `&fos=${fosList.map((fos) => fos.fos_type_id).join(',')}`;
     }
 
-    if(filters.org != ''){
-      url += `&org=${filters.org}`;
+    if(filters.org != '' && filters.org != '-- ALL --'){
+      url += `&org=${encodeURIComponent(filters.org)}`;
     }
 
     if(filters.allocationType != ''){
