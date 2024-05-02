@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
 import ProjectsBrowser from "./components/ProjectsBrowser";
-import bs from './styles/app.module.scss?inline';
+import bs from './styles/bs.scss?inline';
 
 const renderBrowser = ({
     api_url,
