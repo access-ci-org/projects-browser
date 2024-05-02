@@ -9,7 +9,7 @@ const Project = ({ project }) => {
     const amount = resource.allocation ? resource.allocation : resource.amount;
 
     if(units == "[Yes = 1, No = 0]"){
-      return allocation == "1.0" ? "Yes" : "No"
+      return amount == "1.0" ? "Yes" : "No"
     } else {
       let allocation = "0";
       if(parseInt(amount)){

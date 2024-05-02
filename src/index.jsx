@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
 import ProjectsBrowser from "./components/ProjectsBrowser";
-import appStyles from './styles/app.scss?inline';
-import bootstrapStyles from './styles/bootstrap.scss?inline';
+import bs from './styles/app.module.scss?inline';
 
 const renderBrowser = ({
     api_url,
@@ -16,13 +15,14 @@ const renderBrowser = ({
 
   root.render(
     <Provider store={store}>
-      <div className='container'>
-        <ProjectsBrowser
-          api_url={api_url}
-        />
+      <div>
+        <div className='container'>
+          <ProjectsBrowser
+            api_url={api_url}
+          />
+        </div>
       </div>
-      {bootstrapDisabled ? '' : <style>{bootstrapStyles}</style>}
-      <style>{appStyles}</style>
+      <style>{bs}</style>
     </Provider>
   );
 }
