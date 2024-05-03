@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
@@ -11,7 +10,14 @@ const renderBrowser = ({
     disable_bootstrap
   }) => {
   const container = document.getElementById("projects_browser_app");
-  const root = ReactDOM.createRoot(container);
+  let root;
+  if (disable_bootstrap) {
+    root = ReactDOM.createRoot(container);
+  } else {
+    const shadow = container.attachShadow({ mode: "open" });
+    root = ReactDOM.createRoot(shadow);
+  }
+
   const bootstrapDisabled = disable_bootstrap ? disable_bootstrap : false;
 
   root.render(
