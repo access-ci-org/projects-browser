@@ -14,7 +14,7 @@ const ProjectsBrowser = ({ api_url }) => {
   const showPagination = useSelector( selectShowPagination );
   const loadingScreen = (
     <div className="loadingDiv">
-      Loading <FontAwesomeIcon icon={faCircleNotch} spin />
+      Loading ...
     </div>
   )
 

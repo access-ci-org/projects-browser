@@ -1,6 +1,6 @@
 {
   "name": "@xras/projects-browser",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A viewer for allocated Projects and their details.",
   "license": "Apache-2.0",
   "type": "module",
