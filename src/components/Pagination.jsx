@@ -142,7 +142,7 @@ const Pagination = ({ scroll }) => {
 							disabled={pageData.current_page == 1}
 							aria-label="Previous Page Button"
 						>
-							<FontAwesomeIcon icon={faChevronLeft} />
+							<FontAwesomeIcon icon={faChevronLeft} style={{ height: "20px"}} />
 						</button>
 					</li>
 					{pageLinks.map((link, index) =>
@@ -158,7 +158,7 @@ const Pagination = ({ scroll }) => {
 							disabled={pageData.current_page == pageData.last_page}
 							aria-label="Next Page Button"
 						>
-							<FontAwesomeIcon icon={faChevronRight} />
+							<FontAwesomeIcon icon={faChevronRight} style={{ height: "20px"}} />
 						</button>
 					</li>
 				</ul>
