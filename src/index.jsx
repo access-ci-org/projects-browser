@@ -4,6 +4,7 @@ import { store } from './state/store';
 import ProjectsBrowser from "./components/ProjectsBrowser";
 import appStyles from './styles/app.scss?inline';
 import bootstrapStyles from './styles/bootstrap.scss?inline';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const renderBrowser = ({
     api_url,

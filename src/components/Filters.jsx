@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Select from 'react-select';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import { selectFilters, selectTypeLists } from "../state/browserSlice";
 import {
   getProjects,
@@ -25,7 +25,7 @@ const Filters = () => {
   })
   const filtersLoaded = useSelector( selectFiltersLoaded );
   const selectRef = useRef();
-  const [orgValue, setOrgValue] = useState(null);
+  const [orgValue, setOrgValue] = useState([]);
   const [filtered, setFiltered] = useState(false);
 
   const handleFilterChange = (e) => {
@@ -41,7 +41,7 @@ const Filters = () => {
   }
 
   const handleReset = () => {
-    setOrgValue(null);
+    setOrgValue([]);
     dispatch( setShowPagination(false) );
     dispatch( updatePageData( {current_page: 1} ) );
     dispatch( resetFilters() );
@@ -55,7 +55,9 @@ const Filters = () => {
 
   const updateOrgs = (opt) => {
     setOrgValue(opt)
-    dispatch( updateFilter({ name: "org", value: opt.value }))
+    if(opt.length > 0){
+      dispatch( updateFilter({ name: "org", value: opt[0].value }));
+    }
   }
 
   const buttonDisabled = () => {
@@ -109,17 +111,12 @@ const Filters = () => {
 
         <h5 id="org_select_label" className="mb-1">Organization</h5>
         <div className="mb-3">
-          <Select
-              key={`org_select`}
-              options={orgList}
-              openMenuOnClick={true}
-              name={`org`}
-              inputId={`orgs_filter`}
-              ref={selectRef}
-              closeMenuOnSelect={true}
-              onChange={updateOrgs}
-              value={orgValue}
-              aria-labelledby="org_select_label"
+          <Typeahead
+            onChange={(selected) => updateOrgs(selected)}
+            options={orgList}
+            selected={orgValue}
+            id="OrgSelect"
+            aria-labelledby="org_select_label"
           />
         </div>
 
