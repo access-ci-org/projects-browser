@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-const data = document.getElementById("projects_browser_app").dataset;
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export const initialState = {
   apiUrl: null,
   pages: 1,
   projects: [],
@@ -11,7 +10,8 @@ const initialState = {
   filters: {
     org: '',
     allocationType: '',
-    allFosToggled: true
+    allFosToggled: true,
+    resource: ''
   },
   pageData: {
     current_page: 1,
@@ -21,8 +21,9 @@ const initialState = {
     orgs: [],
     fosTypes: [],
     allocationTypes: [],
+    resources: []
   }
-}
+};
 
 export const initApp = createAsyncThunk(
   'projectsBrowser/initApp',
@@ -77,7 +78,7 @@ export const getProjects = createAsyncThunk(
     let url = `${state.apiUrl}?page=${state.pageData.current_page}`;
 
     if(fosList.length != typeLists.fosTypes.length){
-      url += `&fos=${fosList.map((fos) => fos.fos_type_id).join(',')}`;
+      url += `&fos=${fosList.map((fos) => fos.fosTypeId).join(',')}`;
     }
 
     if(filters.org != '' && filters.org != '-- ALL --'){
@@ -86,6 +87,10 @@ export const getProjects = createAsyncThunk(
 
     if(filters.allocationType != ''){
       url += `&allocation_type=${filters.allocationType}`;
+    }
+
+    if(filters.resource != ''){
+      url += `&resources=${filters.resource}`;
     }
 
     const response = await fetch(url);
@@ -104,7 +109,8 @@ export const browserSlice = createSlice({
       state.filters = {
         org: '',
         allocationType: '',
-        allFosToggled: false
+        allFosToggled: false,
+        resource: ''
       }
 
       browserSlice.caseReducers.toggleAllFos(state);
@@ -126,7 +132,7 @@ export const browserSlice = createSlice({
     toggleFos: (state, { payload }) => {
 
       state.typeLists.fosTypes.forEach((fos) => {
-        if(fos.fos_type_id == payload.fos_type_id){
+        if(fos.fosTypeId == payload.fosTypeId){
           fos.checked = !fos.checked
         }
       })
@@ -196,6 +202,6 @@ export const selectProjectsLoaded = (state) => state.projectsBrowser.projectsLoa
 export const selectPageData = (state) => state.projectsBrowser.pageData;
 export const selectPages = (state) => state.projectsBrowser.selectPages;
 export const selectProjects = (state) => state.projectsBrowser.projects;
-export const selectShowPagination = (state) => state.projectsBrowser.filtersLoaded && state.projectsBrowser.projectsLoaded;
+export const selectShowPagination = (state) => state.projectsBrowser.filtersLoaded && state.projectsBrowser.projectsLoaded && state.projectsBrowser.pageData.last_page > 1;
 export const selectTypeLists = (state) => state.projectsBrowser.typeLists;
 export default browserSlice.reducer;

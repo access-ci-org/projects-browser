@@ -62,11 +62,9 @@ const Filters = () => {
 
   const buttonDisabled = () => {
     return (
-      filters.org == ''
-      && filters.allocationType == ''
-      && filters.allFosToggled
-    )
-  }
+      filters.org == "" && filters.allocationType == "" && filters.allFosToggled && filters.resource == ""
+    );
+  };
 
   if(!filtersLoaded) {
     return (<></>)
@@ -85,27 +83,32 @@ const Filters = () => {
               value=""
               id="toggle_all"
               checked={filters.allFosToggled}
-              onChange={() => { dispatch( toggleAllFos() ) } }
+              onChange={() => {
+                dispatch(toggleAllFos());
+              }}
             />
             <label className="form-check-label" htmlFor={`toggle_all`}>
               (Toggle All)
             </label>
           </div>
-          {typeLists.fosTypes.map((fos) =>
-            <div className="form-check" key={`fos_${fos.fos_type_id}`}>
+          {typeLists.fosTypes.map((fos) => (
+            <div className="form-check" key={`fos_${fos.fosTypeId}`}>
               <input
                 className="form-check-input"
                 type="checkbox"
-                value={fos.fos_type_id}
-                id={`fos_${fos.fos_type_id}`}
+                value={fos.fosTypeId}
+                id={`fos_${fos.fosTypeId}`}
                 checked={fos.checked}
-                onChange={() => dispatch( toggleFos(fos) )}
+                onChange={() => dispatch(toggleFos(fos))}
               />
-              <label className="form-check-label" htmlFor={`fos_${fos.fos_type_id}`}>
-                {fos.fos_name}
+              <label
+                className="form-check-label"
+                htmlFor={`fos_${fos.fosTypeId}`}
+              >
+                {fos.fosName}
               </label>
             </div>
-          )}
+          ))}
 
         </div>
 
@@ -135,6 +138,27 @@ const Filters = () => {
                 <option value={a} key={`allocation_type_${i}`}>{a}</option>
               )}
             </select>
+        </div>
+
+        <h5 id="resource_filter_label" className="mb-1">
+          Resource
+        </h5>
+        <div className="mb-3">
+          <select
+            name="resource"
+            id="resource_select"
+            value={filters.resource}
+            className="form-control"
+            aria-labelledby="resource_filter_label"
+            onChange={(e) => handleFilterChange(e)}
+          >
+            <option value="">-- All --</option>
+            {typeLists.resources.map((res, i) => (
+              <option value={res.resourceId} key={`resource_${i}`}>
+                {res.resourceName}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="mt-2">

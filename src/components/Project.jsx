@@ -27,10 +27,15 @@ const Project = ({ project }) => {
     }
   }
 
+  const requestNumber = () => {
+    if(project.requestNumber && project.requestNumber != "") return `(${project.requestNumber})`
+    return '';
+  }
+
   return (
       <div className="card mb-4">
         <div className="card-header bg-primary text-white">
-            <span className="fw-bold">({project.requestNumber}) {project.requestTitle}</span> <br />
+            <span className="fw-bold">{requestNumber()} {project.requestTitle}</span> <br />
             <span className="fst-italic">{project.pi} <small> ({project.piInstitution}) </small></span>
         </div>
         <div className="card-body">
