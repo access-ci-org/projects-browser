@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import Accordion  from "react-bootstrap/Accordion";
+import { selectIsSingleEntry } from "../state/browserSlice";
 
 const Project = ({ project }) => {
   const resources = project.resources;
+  const [showAlert, setShowAlert] = useState(false);
+  const singleEntry = useSelector( selectIsSingleEntry );
+  const buttonRef = useRef(null);
+
+  let accordionProps = {
+    flush: true,
+    className: "mt-3 mb-1",
+  }
+
+  if(singleEntry){
+    accordionProps.defaultActiveKey = ['0','1'];
+    accordionProps.activeKey = ['0', '1'];
+  }
 
   const formatNumber = (resource) => {
     let units = resource.units ? resource.units : resource.resourceUnits;
@@ -29,14 +44,60 @@ const Project = ({ project }) => {
 
   const requestNumber = () => {
     if(project.requestNumber && project.requestNumber != "") return `(${project.requestNumber})`
+
     return '';
+  }
+
+  const copyRequestNumber = () => {
+    const { origin, pathname } = window.location;
+    const link = `${origin}${pathname}?_requestNumber=${project.requestNumber}`;
+    navigator.clipboard.writeText(link);
+    setShowAlert(true);
+    buttonRef.current.className = '';
+    buttonRef.current.innerText = "Copied!"
+
+    setTimeout(() => {
+      buttonRef.current.className = 'material-icons';
+      buttonRef.current.innerText = "link";
+
+      setShowAlert(false);
+    }, 2000);
+  }
+
+  const requestNumberLink = () => {
+    if(requestNumber()){
+      const btnStyle = {
+        background: "none",
+        border: "none",
+        color: "#fff",
+        fontSize: showAlert ? "14px" : "24px",
+      };
+
+      return (
+          <button
+            onClick={copyRequestNumber}
+            style={btnStyle}
+          >
+              <span ref={buttonRef} className="material-icons">link</span>
+          </button>
+      )
+    }
+
+    return <></>
   }
 
   return (
       <div className="card mb-4">
         <div className="card-header bg-primary text-white">
-            <span className="fw-bold">{requestNumber()} {project.requestTitle}</span> <br />
-            <span className="fst-italic">{project.pi} <small> ({project.piInstitution}) </small></span>
+          <div className="d-flex justify-content-between">
+            <div>
+              <span className="fw-bold">{requestNumber()} {project.requestTitle}</span> <br />
+              <span className="fst-italic">{project.pi} <small> ({project.piInstitution}) </small></span>
+            </div>
+            <div>
+              { requestNumberLink() }
+            </div>
+          </div>
         </div>
         <div className="card-body">
           <div className="row fw-bold border-bottom">
@@ -63,7 +124,7 @@ const Project = ({ project }) => {
             </div>
           </div>
 
-          <Accordion flush className="mt-3 mb-1">
+          <Accordion {...accordionProps} >
             <Accordion.Item eventKey="0">
               <Accordion.Header>
                   Resources

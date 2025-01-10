@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { selectFilters, selectTypeLists } from "../state/browserSlice";
+import { selectFilters, selectIsFiltered, selectTypeLists, toggleListFiltered } from "../state/browserSlice";
 import {
   getProjects,
   resetFilters,
@@ -9,6 +9,7 @@ import {
   setShowPagination,
   toggleAllFos,
   toggleFos,
+  toggleSingleEntry,
   updateFilter,
   updatePageData
 } from "../state/browserSlice";
@@ -17,6 +18,8 @@ const Filters = () => {
   const dispatch = useDispatch();
   const filters = useSelector( selectFilters )
   const typeLists = useSelector( selectTypeLists )
+  const filtered = useSelector( selectIsFiltered );
+
   const orgList = typeLists.orgs.map((org) => {
     return {
       label: org,
@@ -26,7 +29,7 @@ const Filters = () => {
   const filtersLoaded = useSelector( selectFiltersLoaded );
   const selectRef = useRef();
   const [orgValue, setOrgValue] = useState([]);
-  const [filtered, setFiltered] = useState(false);
+
 
   const handleFilterChange = (e) => {
     dispatch( updateFilter({ name: e.target.name, value: e.target.value }) )
@@ -44,6 +47,7 @@ const Filters = () => {
     setOrgValue([]);
     dispatch( setShowPagination(false) );
     dispatch( updatePageData( {current_page: 1} ) );
+    dispatch( toggleSingleEntry(false) );
     dispatch( resetFilters() );
     if(filtered){
       window.scrollTo(0,0)
@@ -51,6 +55,10 @@ const Filters = () => {
       setFiltered(false);
     }
 
+  }
+
+  const setFiltered = (b) => {
+    dispatch( toggleListFiltered(b) );
   }
 
   const updateOrgs = (opt) => {
@@ -62,7 +70,11 @@ const Filters = () => {
 
   const buttonDisabled = () => {
     return (
-      filters.org == "" && filters.allocationType == "" && filters.allFosToggled && filters.resource == ""
+      filters.org == ""
+      && filters.allocationType == ""
+      && filters.allFosToggled
+      && filters.resource == ""
+      && filters.requestNumber == ""
     );
   };
 
@@ -159,6 +171,21 @@ const Filters = () => {
               </option>
             ))}
           </select>
+        </div>
+
+        <h5 id="request_number_label" className="mb-1">
+          Request Number
+        </h5>
+        <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              value={filters.requestNumber}
+              name="requestNumber"
+              id="requestNumber"
+              aria-labelledby="request_number_label"
+              onChange={(e) => handleFilterChange(e)}
+            />
         </div>
 
         <div className="mt-2">
