@@ -53,12 +53,10 @@ const Project = ({ project }) => {
     const link = `${origin}${pathname}?_requestNumber=${project.requestNumber}`;
     navigator.clipboard.writeText(link);
     setShowAlert(true);
-    buttonRef.current.className = '';
     buttonRef.current.innerText = "Copied!"
 
     setTimeout(() => {
-      buttonRef.current.className = 'material-icons';
-      buttonRef.current.innerText = "link";
+      buttonRef.current.innerText = "Copy Link";
 
       setShowAlert(false);
     }, 2000);
@@ -70,15 +68,16 @@ const Project = ({ project }) => {
         background: "none",
         border: "none",
         color: "#fff",
-        fontSize: showAlert ? "14px" : "24px",
+        fontSize: "14px"
       };
 
       return (
           <button
             onClick={copyRequestNumber}
             style={btnStyle}
+            ref={buttonRef}
           >
-              <span ref={buttonRef} className="material-icons">link</span>
+              Copy Link
           </button>
       )
     }
