@@ -85,13 +85,37 @@ const Project = ({ project }) => {
     return <></>
   }
 
+  const coPIs = () =>  {
+    if(!project.coPis || project.coPis.length <= 0) return "";
+
+    return (
+      <>
+        <br />
+        <small className="fst-italic">
+          CoPI(s): { project.coPis.map((pi) => `${pi.name} (${pi.organization})`).join(';') }
+        </small>
+      </>
+    );
+
+  }
+
+  const projectDates = () => {
+    if(!project.beginDate || !project.endDate) return "-";
+
+    return <>{project.beginDate} to {project.endDate}</>
+  }
+
   return (
       <div className="card mb-4">
         <div className="card-header bg-primary text-white">
           <div className="d-flex justify-content-between">
             <div>
               <span className="fw-bold">{requestNumber()} {project.requestTitle}</span> <br />
-              <span className="fst-italic">{project.pi} <small> ({project.piInstitution}) </small></span>
+              <span className="fst-italic">
+                { project.coPis && project.coPis.length > 0 ? 'PI: ' : ''}
+                {project.pi} <small> ({project.piInstitution}) </small>
+              </span>
+              { coPIs() }
             </div>
             <div>
               { requestNumberLink() }
@@ -119,7 +143,7 @@ const Project = ({ project }) => {
               {project.allocationType}
             </div>
             <div className="col">
-              {project.beginDate} to {project.endDate}
+              { projectDates() }
             </div>
           </div>
 
