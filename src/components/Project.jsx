@@ -85,6 +85,11 @@ const Project = ({ project }) => {
     return <></>
   }
 
+  const formattedPIName = () =>  {
+      const newName = project.pi.split(",");
+      return `${newName[1]} ${newName[0]}`
+  }
+
   const coPIs = () =>  {
     if(!project.coPis || project.coPis.length <= 0) return "";
 
@@ -105,17 +110,106 @@ const Project = ({ project }) => {
     return <>{project.beginDate} to {project.endDate}</>
   }
 
+  const resourceList = (
+    <table className="table table-striped table-bordered mt-2 mb-0">
+      <thead>
+        <tr>
+          <td><span className="m-0 p-0">Resource</span></td>
+          <td><span className="m-0 p-0 d-inline">Allocation</span></td>
+        </tr>
+      </thead>
+      <tbody>
+        {resources.map((r,i) =>
+          <tr key={`resource_${project.requestId}_${i}`}>
+            <td>{r.resourceName}</td>
+            <td style={{ whiteSpace: 'nowrap' }}>{formatNumber(r)}</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  )
+
+  const resourcesRow = (
+    <>
+      <div className="row mt-2 fw-bold">
+        <div className="col-3 border-bottom">
+          Resources
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          { resourceList }
+        </div>
+      </div>
+    </>
+  )
+
+  const requestTitle = () => {
+    if (project.allocationType === "NAIRR Start-Up") {
+      return (
+          <span className="fw-bold">{requestNumber()} Start-Up: {formattedPIName()}, <em> {project.piInstitution} </em> </span>
+      )
+    }
+    return (
+        <>
+          <span className="fw-bold">{requestNumber()} {project.requestTitle}</span> <br />
+          <span className="fst-italic">{project.pi} <small> ({project.piInstitution}) </small></span>
+          { coPIs() }
+        </>
+    )
+  }
+
+  const projectContent = () => {
+    if (project.allocationType === "NAIRR Start-Up"){
+      return resourcesRow;
+    }
+
+    if(singleEntry){
+      return (
+        <>
+          {resourcesRow}
+          <div className="row mt-2 fw-bold">
+            <div className="col-3 border-bottom">
+              Abstract
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <div style={{ whiteSpace: "pre-wrap", padding: "5px" }}>{ project.abstract }</div>
+            </div>
+          </div>
+        </>
+      )
+    }
+
+    return (
+      <Accordion {...accordionProps}>
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>
+              Resources
+          </Accordion.Header>
+          <Accordion.Body>
+            { resourceList }
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>
+            Abstract
+          </Accordion.Header>
+          <Accordion.Body>
+            <div style={{ whiteSpace: "pre-wrap", padding: "5px" }}>{ project.abstract }</div>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    )
+  }
+
   return (
       <div className="card mb-4">
         <div className="card-header bg-primary text-white">
           <div className="d-flex justify-content-between">
             <div>
-              <span className="fw-bold">{requestNumber()} {project.requestTitle}</span> <br />
-              <span className="fst-italic">
-                { project.coPis && project.coPis.length > 0 ? 'PI: ' : ''}
-                {project.pi} <small> ({project.piInstitution}) </small>
-              </span>
-              { coPIs() }
+              { requestTitle() }
             </div>
             <div>
               { requestNumberLink() }
@@ -147,39 +241,7 @@ const Project = ({ project }) => {
             </div>
           </div>
 
-          <Accordion {...accordionProps} >
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>
-                  Resources
-              </Accordion.Header>
-              <Accordion.Body>
-                <table className="table table-striped table-bordered mt-2 mb-0">
-                  <thead>
-                    <tr>
-                      <td><span className="m-0 p-0">Resource</span></td>
-                      <td><span className="m-0 p-0 d-inline">Allocation</span></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {resources.map((r,i) =>
-                      <tr key={`resource_${project.requestId}_${i}`}>
-                        <td>{r.resourceName}</td>
-                        <td style={{ whiteSpace: 'nowrap' }}>{formatNumber(r)}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>
-                Abstract
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="abstract">{ project.abstract }</div>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
+          { projectContent() }
 
         </div>
       </div>
